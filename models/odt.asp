@@ -324,17 +324,29 @@ Class Odt
       RS("presupuestar") = odtData.presupuestar
       RS("activo") = odtData.activo
       RS("MNAnulacion") = odtData.MNAnulacion
+      
+      RS("revisada") = odtData.revisada
+      RS("revisada_por") = odtData.revisada_por
+      RS("electrica") = odtData.electrica
 
       RS.Update 
 
     RS.Close  
     
     response.write(odtData.CodigoODT)
-
+    if esNueva then
+        'localLogAdd("agregada odt : " & odtData.CodigoODT)
+    else
+        'localLogAdd("editada odt : " & odtData.CodigoODT)
+    end if
     if PROD then  
         if esNueva then
-            ODT_mail_solicitante odtData.CodigoODT
-            ODT_mail_definidor odtData.CodigoODT
+            if codigoTipoTarea = 33 then
+                ODT_mail_revisores odtData.CodigoODT
+            else
+                ODT_mail_solicitante odtData.CodigoODT
+                ODT_mail_definidor odtData.CodigoODT
+            end if
         end if 
 
 		if esDefinicion then
@@ -347,6 +359,17 @@ Class Odt
         
 		if esCompletada then
             ODT_mail_aprobacion odtData.CodigoODT
+        end if
+
+        ' si no hay otra accion, solo es guardar, suponemos que se revisa
+        if Not (esNueva) And Not (esDefinicion) And Not (esInicioTareas) And Not (esCompletada) then
+        'localLogAdd("Revision: no esNueva esDefinicion esInicioTareas esCompletada")
+        'localLogAdd("codigoTipoTarea: " & odtData.codigoTipoTarea & " revisada: " & odtData.revisada )
+        if (odtData.codigoTipoTarea = 33) And (odtData.revisada = 1) then            
+            'ODT_mail_solicitante odtData.CodigoODT
+            'ODT_mail_definidor odtData.CodigoODT
+            'localLogAdd("agregada y enviados 2 emails a revisadores")
+            end if
         end if
         
     end if
@@ -598,5 +621,21 @@ Class Odt
     ODT_mail_presupuesto(codigoOdt)
   End Sub
   
+  Public Sub getFechasPlanificacion(fecha)  
+    //dateNow = FormatFechaSql(fecha)
+    'fecha = "2018-5-1"
+	where = " o.definido = 1 "	    
+    where = where & "AND DATE(FechaPlanificacion) = '" & fecha & "'" 	
+    sql = "SELECT o.codigoODT, o.FechaPlanificacion, o.definido FROM odts as o "
+    sql = sql & "WHERE " & where
+    sql = sql & " ORDER BY FechaPlanificacion ASC "
+    sql = sql & "LIMIT 10" 
+    'response.write(sql)
+    'localLogAdd(sql)    
+    Set rst = DbQuery(sql)
+    'response.write("{" & recordCount(rst) & "}")
+    response.write(recordCount(rst))
+  End Sub
+
 End Class
 %>

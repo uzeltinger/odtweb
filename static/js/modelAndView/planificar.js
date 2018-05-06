@@ -144,7 +144,7 @@ PlanificarOdtView = Backbone.View.extend({
 
     $("#MNcontacto", view).val(model.get('MNcontacto'));
     $("#codigoPrioridad", view).val(model.get('codigoPrioridad'));
-
+    $("#codigoTipoTarea", view).val(model.get('codigoTipoTarea'));
     $(".modal_dialog_content #modal_dialog_title").html("<span style='font-weight:normal;'>Orden de Trabajo</span><span> Nro " + model.get('codigoODT') + "</span>");
                   
     $(".modal_dialog_content").width("830px");

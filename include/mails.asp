@@ -135,8 +135,21 @@ Function BuscaMnResponsablesDow()
     
 End Function
 
-Function ODT_mail_solicitante(codigoODT)
+Function ODT_mail_revisores(codigoODT)
+    Set rst = DbQuery("SELECT * FROM ODTs WHERE codigoODT=" & codigoODT)
+    
+    s = ""
+    If Not rst.EOF Then
+    s = s & "<FONT face=Arial color=#000000 size=3>"
+        s = s & "<STRONG>Solicitud de Orden de Trabajo Nro: " & rst("codigoODT") & "</STRONG>"
+        s = s & "</FONT><BR><BR>"
+        s = s & "Gracias.<BR><BR><a href='http://hwnt04/odtweb/?odt=" & rst("codigoODT") & "'>Para ver esta órden haga click aquí</a></FONT>"
+    sendmail "U215377;U215375", rst("MNsolicitante"), "ODT | Solicitud Nro: " & codigoODT, s
+    End If
+End Function
 
+Function ODT_mail_solicitante(codigoODT)
+'localLogAdd("ODT_mail_solicitante codigoODT: " & codigoODT )
     Set rst = DbQuery("SELECT * FROM ODTs WHERE codigoODT=" & codigoODT)
     
     s = ""
@@ -168,7 +181,7 @@ Function ODT_mail_solicitante(codigoODT)
 End Function
 
 Function ODT_mail_definidor(codigoODT)
-
+'localLogAdd("ODT_mail_definidor codigoODT: " & codigoODT )
     Set rst = DbQuery("SELECT * FROM ODTs WHERE codigoODT=" & codigoODT)
     
     s = ""

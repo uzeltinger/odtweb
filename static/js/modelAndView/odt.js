@@ -49,6 +49,9 @@ Odt = Backbone.Model.extend({
     activo: '0',
     iniciado: '0',
     auditado: '0',
+    electrica: 0,
+    revisada: 0,
+    revisada_por: "",
     icon: 'creada', 
     fechaMostrar: '',
     nombreSolicitante: '',
@@ -162,7 +165,12 @@ OdtDefinirView = Backbone.View.extend({
     }
     
     var diasPlanificacion = modelo.get("codigoPrioridad") == "U" ? 1 : 7;
-    
+
+    if(diasPlanificacion==7){
+        FechaPlanificacion = app.setFechaPlanificacion(model.get('codigoODT'));
+        console.log("FechaPlanificacion",FechaPlanificacion);
+    }
+
     modelo.set({  definido : '1',  
                   MNAprobador : $('#aprobadoresCombo').val(),
                   codigoCuenta: $('#cuentaCombo').val(),
@@ -273,6 +281,7 @@ OdtFullView = Backbone.View.extend({
     'click input[type=button]#definir'      : 'definirODT',
     'click input[type=button]#anular'       : 'anularODT',
     'click a#anular'                        : 'anularODT',
+    'click input[type=button]#revisar'      : 'updateModel',
     'change #codigoPlanta'                  : 'updateComboEdificio',
     'change #codigoEdificio'                : 'updateComboDefinidor',
     'click input[type=button]#addMaterial'  : 'addMaterial',
@@ -635,7 +644,7 @@ OdtFullView = Backbone.View.extend({
         $("#codigoPrioridad").focus();
         return;
     }
-  
+
     modelo.save({},{ 
         success: function(model, response) {
         
@@ -716,7 +725,7 @@ OdtFullView = Backbone.View.extend({
     
   },
   
-  
+
   definirODT: function(){
     
     var model = this.model;
@@ -828,8 +837,11 @@ OdtView = Backbone.View.extend({
   },
 
   editODT: function() {
-  
+    
     var model = this.model;
+
+    //FechaPlanificacion = app.setFechaPlanificacion(model.get('codigoODT'));
+    //console.log("FechaPlanificacion",FechaPlanificacion);
 
     var viewFull = new OdtFullView({model: model});
     var view = viewFull.render().el;
@@ -844,7 +856,7 @@ OdtView = Backbone.View.extend({
 
     $("#MNcontacto", view).val(model.get('MNcontacto'));
     $("#codigoPrioridad", view).val(model.get('codigoPrioridad'));
-	 $("#codigoTipoTarea", view).val(model.get('codigoTipoTarea'));
+    $("#codigoTipoTarea", view).val(model.get('codigoTipoTarea'));
 	 
     $(".modal_dialog_content #modal_dialog_title").html("<span style='font-weight:normal;'>Orden de Trabajo</span><span> Nro " + model.get('codigoODT') + "</span>");
                   

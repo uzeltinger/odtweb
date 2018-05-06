@@ -222,7 +222,7 @@ Function log(texto)
     
       dim fs,fname
       set fs=Server.CreateObject("Scripting.FileSystemObject")
-      set fname=fs.OpenTextFile("C:\Inetpub\wwwroot\odtweb\log.txt", 8) ' 8=append 2=create
+      set fname=fs.OpenTextFile("C:\Inetpub\wwwroot\odtweb\log.txt", 8) ' 8=append 2=create      
       fname.WriteLine(texto)
       fname.Close
       set fname=nothing
@@ -387,20 +387,20 @@ Dim t2
 			if dif < 1440 then
 				t1 = Int(dif / 60)
 				t2 = dif - (t1 * 60)
-				humanizarDiferencia = t1 & IIf(t2 > 25, "½", "") & " hora" & IIf(t1 > 1, "s", "")
+				humanizarDiferencia = t1 & IIf(t2 > 25, "ï¿½", "") & " hora" & IIf(t1 > 1, "s", "")
 			else 
 				if dif  < 43200 then
 					t1 = Int(dif / 1440)
-					humanizarDiferencia = t1 & " día" & IIf(t1 > 1, "s", "")
+					humanizarDiferencia = t1 & " dï¿½a" & IIf(t1 > 1, "s", "")
 				else 
 					if dif < 525600 then
 						t1 = Int(dif / 43200)
 						t2 = (dif - (t1 * 43200)) / 1440
-						humanizarDiferencia = t1 & IIf(t2 > 20, "½", "") & " mes" & IIf(t1 > 1, "es", "")
+						humanizarDiferencia = t1 & IIf(t2 > 20, "ï¿½", "") & " mes" & IIf(t1 > 1, "es", "")
 					Else
 						t1 = Int(dif / 525600)
 						t2 = Int((dif - (t1 * 525600)) / 43200)
-						humanizarDiferencia = t1 & " año" & IIf(t1 > 1, "s", "")
+						humanizarDiferencia = t1 & " aï¿½o" & IIf(t1 > 1, "s", "")
 					End if
 				End if
 			End if
@@ -477,7 +477,13 @@ Function usuarioPuedeTodos(permiso)
 End Function
 
 
-
+' usuarioPuedeRevisar: usuarioPuede(ODT_puedeRevisar)
+Function usuarioPuedeRevisar(permiso) 
+  puede = true
+  a = USUARIO_PERMISOS_ODT AND permiso
+  if a = 0 then puede = false
+  usuarioPuedeRevisar = puede
+End Function
 
 Function formatSQL(fecha)
 

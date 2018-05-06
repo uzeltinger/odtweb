@@ -82,14 +82,34 @@
     <li style="height: 84px"><label>Tarea</label>
       <textarea name="DescripcionODT" id="DescripcionODT" class="field" style="width: 620px;height: 64px;padding: 4px 3px;">{{DescripcionODT}}</textarea>
     </li>
-
-    <li><label>Contacto</label>
+    <li style="width: 50%; float: left"><label>Eléctrica</label>
+      <select name="electrica" id="electrica" class="field comboboxDefaults">
+          <option value="0" {[ if(electrica == 0) { ]} selected {[ } ]} >No</option>
+          <option value="1" {[ if(electrica == 1) { ]} selected {[ } ]} >Si</option>
+      </select>
+    </li>
+    <% if usuarioPuedeRevisar(ODT_puedeRevisar) then %>    
+    <% 'if USUARIO_DEFAULT = "U215377" Or USUARIO_DEFAULT = "U215375" then %>
+      {[ if(codigoTipoTarea == 33) { ]}
+        <li style="width: 50%; float: right"><label>Revisada</label>
+          <select name="revisada" id="revisada" class="field comboboxDefaults">
+            <option value="0" {[ if(revisada == 0) { ]} selected {[ } ]} >Sin Revisar</option>
+            <option value="1" {[ if(revisada == 1) { ]} selected {[ } ]} >Revisada</option>
+        </select>
+        </li>
+      {[ } else { ]}
+      <input type="hidden" name="revisada" value="0">
+      {[ } ]}
+    <% else %>      
+      <input type="hidden" name="revisada" value="0">
+    <% end if %>
+    <li style="width: 100%; float: left"><label>Contacto</label>
       <select name="MNcontacto" id="MNcontacto" class="field comboboxDefaults">
 	  <% renderSelectContactos %>
 	  </select>
-    </li>
+    </li>    
 
-    <li><label>Prioridad</label>
+    <li style="width: 100%; float: left"><label>Prioridad</label>
       <select name="codigoPrioridad" id="codigoPrioridad" class="field comboboxDefaults">
 	  <%
 		sql = "SELECT p.codigoPrioridad as id, p.Prioridad as text FROM odtprioridades p WHERE p.Activo" 
@@ -100,6 +120,13 @@
 
   </ul>
 
+  <% if usuarioPuedeRevisar(ODT_puedeRevisar) then %>    
+      {[ if(codigoTipoTarea == 33) { ]}
+      <div style="float: right;">
+          <input type="button" id="revisar" value="Guardar" class="btn">
+      </div>
+      {[ } ]}
+  <% end if %>
 
   {[ if(activo != '0' || codigoODT == 0) { ]}
 

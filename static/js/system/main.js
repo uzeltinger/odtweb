@@ -100,6 +100,14 @@ $(function() {
             'click input[type=button]#nuevoServicio' : 'nuevoServicio'
 
         },
+        setFechaPlanificacion: function(codigoODT){ 
+            console.log("get","/odtweb/api/planificar/setFechaPlanificacion.asp?codigoODT=" + codigoODT);
+            $.get("/odtweb/api/planificar/setFechaPlanificacion.asp?codigoODT=" + codigoODT, function(fecha, response) {
+                return fecha;
+            }).done(function() {
+                
+            });
+        },        
 
         updateCounters: function() {
             

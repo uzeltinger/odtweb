@@ -40,7 +40,7 @@ html ul.tabs li.active, html ul.tabs li.active a:hover  {
 }
 
 .tab_container {
-	height: 430px;
+	min-height: 430px;
 	border-top: none;
 	overflow: hidden;
 	clear: both;

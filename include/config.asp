@@ -4,7 +4,7 @@
    Const fechaSQL = "yyyy-mm-dd"
    
    PROD = (Request.ServerVariables("SERVER_NAME") = "hwnt04")
-   
+
    ru = ucase(Request.ServerVariables("REMOTE_USER"))
    USUARIO_DEFAULT = Mid(ru, Instr(ru, "\") + 1)
    
@@ -23,9 +23,38 @@
 			'USUARIO_DEFAULT = "U833860" '"U360821"
 		end if
    end if
-   
-  ' constantes permisos
   
+  'Puede todo
+  USUARIO_DEFAULT = "U215250" 
+  'definidor U390438 Cao Ignacio Oscar 
+  USUARIO_DEFAULT = "U390438"
+  'Perez Carlos Enrique U215377'
+  USUARIO_DEFAULT = "U215377" 
+ ' Lopez Jose U833099 
+  USUARIO_DEFAULT = "U215250"  
+
+
+Function localLogAdd(texto)
+  dim fs,fname
+      set fs=Server.CreateObject("Scripting.FileSystemObject")
+
+      if PROD then
+        set fname=fs.OpenTextFile("C:\Inetpub\wwwroot\odtweb\log.txt", 8) ' 8=append 2=create      
+      else
+        set fname=fs.OpenTextFile("E:\xampp70\htdocs\sieder\ordenesdetrabajo\odtweb\log.txt", 8) ' 8=append 2=create
+      end if
+      fname.WriteLine(texto)
+      fname.Close
+      set fname=nothing
+      set fs=nothing
+End Function
+
+' constante cantidad de tareas por dia
+  Const CANTIDAD_TAREAS_DIARIAS = 10
+
+  ' constantes permisos
+
+  Const ODT_puedeRevisar = 512
   Const ODT_puedePlanificar = 256
   Const ODT_puedeFacturar = 128  
   Const ODT_puedeCargarDetalle = 64
@@ -94,5 +123,12 @@
   end if
   
   RS.Close
-  
+
+  Set RS = DbQuery("select MNRevisador from odtrevisadores where activo AND MNRevisador='"& USUARIO_DEFAULT &"'")
+  if not RS.eof then
+    USUARIO_PERMISOS_ODT = ODT_puedeRevisar
+  end if
+
+  RS.Close
+
 %>
