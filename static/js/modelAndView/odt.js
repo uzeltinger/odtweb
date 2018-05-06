@@ -166,10 +166,7 @@ OdtDefinirView = Backbone.View.extend({
     
     var diasPlanificacion = modelo.get("codigoPrioridad") == "U" ? 1 : 7;
 
-    if(diasPlanificacion==7){
-        FechaPlanificacion = app.setFechaPlanificacion(model.get('codigoODT'));
-        console.log("FechaPlanificacion",FechaPlanificacion);
-    }
+    
 
     modelo.set({  definido : '1',  
                   MNAprobador : $('#aprobadoresCombo').val(),
@@ -188,6 +185,11 @@ OdtDefinirView = Backbone.View.extend({
             }
         });
     
+    if(diasPlanificacion==7){
+        FechaPlanificacion = app.setFechaPlanificacion(modelo.get('codigoODT'));
+        console.log("FechaPlanificacion",FechaPlanificacion);
+    }
+
   },
   
   presupuestarODT: function() {

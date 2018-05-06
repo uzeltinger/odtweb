@@ -7,9 +7,8 @@
     nextSevenDay = DateAdd("d", 7, fecha)
     nextDay = nextSevenDay
     calcularFecha = FormatFechaSql(nextDay)    
-
     seguir = true
-    x = 0
+    'x = 0
     do while seguir
         cantidad = getCountTareas(calcularFecha)
         x = x + 1
@@ -21,16 +20,15 @@
             nextDay = DateAdd("d", 1, nextDay)
             calcularFecha = FormatFechaSql(nextDay)    
         end if
-        if(x=10) then seguir = false end if
+        'if(x=10) then seguir = false end if
     loop
     if debuguea then Response.write("<br>devolver: " & calcularFecha) end if
     Response.write(calcularFecha)
 
     Set RS = DbOpen( "SELECT * FROM odts WHERE codigoODT=" & codigoODT )
-    RS("fechaDefinicion") = calcularFecha
+    RS("FechaPlanificacion") = calcularFecha
     RS.Update
     RS.Close
-
     public function getCountTareas(fecha)  
         //dateNow = FormatFechaSql(fecha)
         'fecha = "2018-5-1"
