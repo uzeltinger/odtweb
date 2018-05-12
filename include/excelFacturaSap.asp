@@ -66,8 +66,64 @@ Set rst1 = DbQuery(sql)
   <TBODY>    
      
     <%
-    While Not rst1.EOF
-       
+	While Not rst1.EOF
+	
+	' para cada odt obtener los materiales 
+	' y calcular el valor agregado por gestión de materiales
+	' para cada item agrupados por factura
+
+	mysql = "select * from odtitemsmateriales where codigoODT = " & rst1(7) 
+	mysql = mysql + " order by NroFactura ASC"
+	Set rsOdts = DbQuery(mysql)			
+
+	totalDeLaOrden = 0
+	totalDeLaFactura = 0
+	codigoFacturaAnterior = 0
+
+	While Not rsOdts.EOF
+		
+		precioMateriales = rsOdts(3) * rsOdts(4)
+		
+		if codigoFacturaAnterior = rsOdts(6) Then
+
+			totalDeLaFactura = totalDeLaFactura + precioMateriales
+			totalUltimaFactura = totalDeLaFactura
+
+		else
+
+			'calcular % de agregado				
+			if totalDeLaFactura >= CGCobtenerImporte(now) then
+				totalDeLaFactura = totalDeLaFactura * (1 + CGCobtenerCGC2(now))
+			else
+				totalDeLaFactura = totalDeLaFactura * (1 + CGCobtenerCGC1(now))					
+			end if
+
+			totalDeLaOrden = totalDeLaOrden + totalDeLaFactura
+			totalDeLaFactura = precioMateriales
+			totalUltimaFactura = totalDeLaFactura
+
+		end if					
+
+		codigoFacturaAnterior = rsOdts(6)
+		
+		for i = 0 to rsOdts.fields.count -1 
+			v = rsOdts(6)		
+			' 3 * 4 si 6 es la misma factura
+		next
+		rsOdts.MoveNext
+	Wend
+
+
+
+
+	'calcular % de agregado para la ultima factura que no entra en el ciclo'				
+	if totalUltimaFactura >= CGCobtenerImporte(now) then
+		totalUltimaFactura = totalUltimaFactura * (1 + CGCobtenerCGC2(now))	
+	else
+		totalUltimaFactura = totalUltimaFactura * (1 + CGCobtenerCGC1(now))
+	end if
+
+	totalDeLaOrden = totalDeLaOrden + totalUltimaFactura
      %>
      
      <TR>
@@ -86,11 +142,7 @@ Set rst1 = DbQuery(sql)
 			response.write rst1(i) * 1.10
 		else
 			if (rst1(5) = "3006799") and (i=6 or i=12) then
-				if v >= CGCobtenerImporte(now) then
-					response.write rst1(i) * (1 + CGCobtenerCGC2(now))
-				else
-					response.write rst1(i) * (1 + CGCobtenerCGC1(now))
-				end if
+			response.write totalDeLaOrden
 			else
 				if i=8 or i=9 then
 					 
