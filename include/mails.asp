@@ -143,8 +143,8 @@ Function ODT_mail_revisores(codigoODT)
     s = s & "<FONT face=Arial color=#000000 size=3>"
         s = s & "<STRONG>Solicitud de Orden de Trabajo Nro: " & rst("codigoODT") & "</STRONG>"
         s = s & "</FONT><BR><BR>"
-        s = s & "Gracias.<BR><BR><a href='http://hwnt04/odtweb/?odt=" & rst("codigoODT") & "'>Para ver esta órden haga click aquí</a></FONT>"
-    sendmail "U215377;U215375", rst("MNsolicitante"), "ODT | Solicitud Nro: " & codigoODT, s
+        s = s & "Gracias.<BR><BR><a href='http://hwnt04/odtweb/?odt=" & rst("codigoODT") & "'>Para revisionar esta órden antes de la definición, haga click aquí</a></FONT>"
+    sendmail  rst("MNsolicitante"),"NB86610;NB84242;U215377;U215375", "ODT | Solicitud Nro: " & codigoODT, s
     End If
 End Function
 

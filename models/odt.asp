@@ -341,7 +341,7 @@ Class Odt
     end if
     if PROD then  
         if esNueva then
-            if codigoTipoTarea = 33 then
+            if odtData.codigoTipoTarea = "33" then
                 ODT_mail_revisores odtData.CodigoODT
             else
                 ODT_mail_solicitante odtData.CodigoODT
@@ -366,8 +366,8 @@ Class Odt
         'localLogAdd("Revision: no esNueva esDefinicion esInicioTareas esCompletada")
         'localLogAdd("codigoTipoTarea: " & odtData.codigoTipoTarea & " revisada: " & odtData.revisada )
         if (odtData.codigoTipoTarea = 33) And (odtData.revisada = 1) then            
-            'ODT_mail_solicitante odtData.CodigoODT
-            'ODT_mail_definidor odtData.CodigoODT
+            ODT_mail_solicitante odtData.CodigoODT
+            ODT_mail_definidor odtData.CodigoODT
             'localLogAdd("agregada y enviados 2 emails a revisadores")
             end if
         end if
