@@ -153,7 +153,7 @@
 
             {[ if(MNSolicitante == '<%= USUARIO_DEFAULT %>') { ]}
               <input type="button" id="anular" value="Anular" class="btn">
-              <span style="margin: 2px;">ó</span>
+              <span style="margin: 2px;">ó</span>              
             {[ } else { ]}
               <% if usuarioPuede(ODT_puedeAdministrar) then %>
               <input type="button" id="update" value="Actualizar ODT" class="btn" disabled>
@@ -170,7 +170,9 @@
         
         <input type="button" id="anular" value="Anular" class="btn">
         <span style="margin: 2px;">ó</span>
-      
+        <input type="button" id="saveeditedodt" value="Actualizar ODT" class="btn" >
+        <input type="hidden" name="savededitedodt" id="savededitedodt" value="{{codigoODT}}">
+        <span style="margin: 2px;">ó</span>
       {[ } ]} 
       
       <a href="javascript:void(0)" onclick="$('#ventana-dialogo').hide()">Cerrar</a>

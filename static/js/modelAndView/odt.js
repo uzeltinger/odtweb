@@ -280,6 +280,7 @@ OdtFullView = Backbone.View.extend({
 
   events: {
     'click input[type=button]#update'       : 'updateModel',
+    'click input[type=button]#saveeditedodt': 'updateModel',
     'click input[type=button]#definir'      : 'definirODT',
     'click input[type=button]#anular'       : 'anularODT',
     'click a#anular'                        : 'anularODT',
@@ -574,11 +575,11 @@ OdtFullView = Backbone.View.extend({
   updateModel : function() {
     
     var modelo = this.model;
-    
+
     $('.field').each(function(index,field) {
-      modelo.set(field.name,field.value,{ silent: true });
-    });
-	
+      modelo.set(field.name,field.value,{ silent: true });      
+    });	
+
 //	if( modelo.get("codigoTipoTarea") < 0 ) {
 //        alert("Debe seleccionar un tipo de tarea");
 //        $("#codigoTipoTarea").focus();
@@ -610,7 +611,7 @@ OdtFullView = Backbone.View.extend({
     }
 
 
-	
+
 
 //Pone el valor de la descripción en los comentarios
 
@@ -659,7 +660,10 @@ OdtFullView = Backbone.View.extend({
               // creo la vista asociada al modelo y la inserto en la lista.
               var view = new OdtView({model: model});
               var v = $(view.render().el).hide();
-              $("ul#listaOdt").prepend(v);
+              var savededitedodt = $("#savededitedodt").val();
+              if(!savededitedodt){
+                $("ul#listaOdt").prepend(v);
+              }
               
               v.slideDown(250, function(){
                 v.css('background-color','#FFFFB9').animate({ backgroundColor: "#FFFFFF"}, 1500);
